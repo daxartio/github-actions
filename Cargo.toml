@@ -1,0 +1,10 @@
+[package]
+name = "github-actions"
+version = "0.0.2"
+description = "Utilities for developing custom GitHub Actions"
+edition = "2021"
+repository = "https://github.com/daxartio/github-actions"
+license = "MIT"
+
+[dependencies]
+uuid = { version = "1.11.0", features = ["v4"] }
