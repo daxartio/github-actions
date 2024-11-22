@@ -1,6 +1,7 @@
 [package]
 name = "github-actions"
 version = "0.0.2"
+authors = ["Danil Akhtarov <daxartio@gmail.com>"]
 description = "Utilities for developing custom GitHub Actions"
 edition = "2021"
 repository = "https://github.com/daxartio/github-actions"
