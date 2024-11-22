@@ -1,5 +1,10 @@
 # Github Actions
 
+[![Crates.io](https://img.shields.io/crates/v/github-actions.svg)](https://crates.io/crates/github-actions)
+[![Docs.rs](https://docs.rs/github-actions/badge.svg)](https://docs.rs/github-actions)
+[![CI](https://img.shields.io/github/actions/workflow/status/daxartio/github-actions/ci.yml?branch=main)](https://github.com/daxartio/github-actions/actions)
+[![Coverage Status](https://coveralls.io/repos/github/daxartio/github-actions/badge.svg?branch=main)](https://coveralls.io/github/daxartio/github-actions?branch=main)
+
 A Rust crate for building GitHub Actions with ease, offering utilities to handle inputs, outputs, logging, and more.
 
 ## Features
