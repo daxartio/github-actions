@@ -10,14 +10,14 @@ pub enum FileCommandError {
 }
 
 pub fn issue_file_command(env: &str, message: &str) -> Result<(), FileCommandError> {
-    let file = env::var(env).map_err(|err| FileCommandError::VarError(err))?;
+    let file = env::var(env).map_err(FileCommandError::VarError)?;
 
     let mut file = OpenOptions::new()
         .append(true)
         .open(file)
-        .map_err(|err| FileCommandError::FileError(err))?;
+        .map_err(FileCommandError::FileError)?;
 
-    writeln!(file, "{}", message).map_err(|err| FileCommandError::FileError(err))?;
+    writeln!(file, "{}", message).map_err(FileCommandError::FileError)?;
     Ok(())
 }
 
@@ -28,14 +28,14 @@ where
 {
     let value = value.to_string();
 
-    if key.as_ref().contains(&delimiter) {
+    if key.as_ref().contains(delimiter) {
         return Err(format!(
             "Unexpected input: key should not contain the delimiter \"{}\"",
             delimiter
         ));
     }
 
-    if value.contains(&delimiter) {
+    if value.contains(delimiter) {
         return Err(format!(
             "Unexpected input: value should not contain the delimiter \"{}\"",
             delimiter

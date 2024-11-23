@@ -6,5 +6,5 @@ pub enum StateResult {
 }
 
 pub fn get_state(name: &str) -> Result<String, StateResult> {
-    env::var(format!("STATE_{}", name.to_uppercase())).map_err(|err| StateResult::VarError(err))
+    env::var(format!("STATE_{}", name.to_uppercase())).map_err(StateResult::VarError)
 }

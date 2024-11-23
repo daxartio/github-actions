@@ -18,7 +18,7 @@ impl<'a> From<Vec<(&'a str, &'a str)>> for Properties<'a> {
 
 impl<'a> From<&[(&'a str, &'a str)]> for Properties<'a> {
     fn from(value: &[(&'a str, &'a str)]) -> Self {
-        Properties(value.into_iter().map(|(k, v)| Property(k, v)).collect())
+        Properties(value.iter().map(|(k, v)| Property(k, v)).collect())
     }
 }
 
@@ -53,7 +53,7 @@ impl<'a> Display for Command<'a> {
             Some(properties) => f.write_fmt(format_args!(
                 "::{} {}::{}",
                 self.command,
-                properties.to_string(),
+                properties,
                 escape_data(self.value)
             )),
             None => f.write_fmt(format_args!(
@@ -92,15 +92,12 @@ impl<'a> Display for CommandWithProperties<'a> {
             ("endLine", end_line.as_deref()),
         ]
         .into_iter()
-        .filter_map(|(k, v)| match v {
-            Some(v) => Some((k, v)),
-            None => None,
-        })
+        .filter_map(|(k, v)| v.map(|v| (k, v)))
         .collect();
 
         Command {
-            command: &self.command,
-            value: &self.value,
+            command: self.command,
+            value: self.value,
             properties: Some(params.into()),
         }
         .fmt(f)

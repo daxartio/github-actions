@@ -19,12 +19,12 @@ pub use summary::*;
 pub use vars::*;
 
 #[cfg(windows)]
-const EOL: &'static str = "\r\n";
+const EOL: &str = "\r\n";
 #[cfg(not(windows))]
-const EOL: &'static str = "\n";
+const EOL: &str = "\n";
 
 fn delimiter() -> String {
-    format!("ghadelimiter_{}", uuid::Uuid::new_v4().to_string())
+    format!("ghadelimiter_{}", uuid::Uuid::new_v4())
 }
 
 fn does_env_exist(envname: &str) -> bool {

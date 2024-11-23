@@ -18,23 +18,19 @@ fn clean_markdown_string(markdown_text: &str) -> String {
 }
 
 pub fn append_job_summary(markdown_text: &str) -> Result<(), SummaryError> {
-    let summary_path =
-        env::var(crate::GITHUB_STEP_SUMMARY).map_err(|err| SummaryError::VarError(err))?;
+    let summary_path = env::var(crate::GITHUB_STEP_SUMMARY).map_err(SummaryError::VarError)?;
     let mut file = OpenOptions::new()
         .append(true)
         .open(summary_path)
-        .map_err(|err| SummaryError::FileError(err))?;
-    writeln!(file, "{}", clean_markdown_string(markdown_text))
-        .map_err(|err| SummaryError::FileError(err))?;
+        .map_err(SummaryError::FileError)?;
+    writeln!(file, "{}", clean_markdown_string(markdown_text)).map_err(SummaryError::FileError)?;
     Ok(())
 }
 
 pub fn overwrite_job_summary(markdown_text: &str) -> Result<(), SummaryError> {
-    let summary_path =
-        env::var(crate::GITHUB_STEP_SUMMARY).map_err(|err| SummaryError::VarError(err))?;
-    let mut file = File::create(summary_path).map_err(|err| SummaryError::FileError(err))?;
-    writeln!(file, "{}", clean_markdown_string(markdown_text))
-        .map_err(|err| SummaryError::FileError(err))?;
+    let summary_path = env::var(crate::GITHUB_STEP_SUMMARY).map_err(SummaryError::VarError)?;
+    let mut file = File::create(summary_path).map_err(SummaryError::FileError)?;
+    writeln!(file, "{}", clean_markdown_string(markdown_text)).map_err(SummaryError::FileError)?;
     Ok(())
 }
 

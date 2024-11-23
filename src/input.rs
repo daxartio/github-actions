@@ -6,14 +6,14 @@ pub enum InputResult {
 }
 
 pub fn get_input(name: &str) -> Result<String, InputResult> {
-    env::var(format!("INPUT_{}", name.to_uppercase())).map_err(|err| InputResult::VarError(err))
+    env::var(format!("INPUT_{}", name.to_uppercase())).map_err(InputResult::VarError)
 }
 
 pub fn get_multiline_input(name: &str) -> Result<Vec<String>, InputResult> {
     get_input(name).map(|input| {
         input
             .split('\n')
-            .filter(|v| *v != "")
+            .filter(|v| !v.is_empty())
             .map(|v| v.to_string())
             .collect()
     })
@@ -57,7 +57,7 @@ mod tests {
     #[test]
     fn test_get_bool_input() {
         env::set_var("INPUT_CI", "true");
-        assert_eq!(true, get_bool_input("ci").unwrap());
+        assert!(get_bool_input("ci").unwrap());
     }
 
     #[test]
