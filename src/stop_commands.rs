@@ -53,7 +53,7 @@ impl<'a, T: AsRef<str>> StopCommandsEnder<'a, T> {
     }
 }
 
-impl<'a, T: AsRef<str>> Drop for StopCommandsEnder<'a, T> {
+impl<T: AsRef<str>> Drop for StopCommandsEnder<'_, T> {
     fn drop(&mut self) {
         self.parent.end();
     }

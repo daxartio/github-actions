@@ -43,7 +43,7 @@ impl<'a> GroupEnder<'a> {
     }
 }
 
-impl<'a> Drop for GroupEnder<'a> {
+impl Drop for GroupEnder<'_> {
     fn drop(&mut self) {
         self.group.end();
     }

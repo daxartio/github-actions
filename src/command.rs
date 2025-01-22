@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 pub struct Property<'a>(pub &'a str, pub &'a str);
 
-impl<'a> Display for Property<'a> {
+impl Display for Property<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.write_fmt(format_args!("{}={}", self.0, escape_property(self.1)))
     }
@@ -28,7 +28,7 @@ impl<'a, const N: usize> From<[(&'a str, &'a str); N]> for Properties<'a> {
     }
 }
 
-impl<'a> Display for Properties<'a> {
+impl Display for Properties<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         f.write_str(
             self.0
@@ -47,7 +47,7 @@ pub struct Command<'a> {
     pub properties: Option<Properties<'a>>,
 }
 
-impl<'a> Display for Command<'a> {
+impl Display for Command<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match &self.properties {
             Some(properties) => f.write_fmt(format_args!(
@@ -77,7 +77,7 @@ pub struct CommandWithProperties<'a> {
     pub end_line: Option<usize>,
 }
 
-impl<'a> Display for CommandWithProperties<'a> {
+impl Display for CommandWithProperties<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let col = self.col.map(|v| v.to_string());
         let end_column = self.end_column.map(|v| v.to_string());
