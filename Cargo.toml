@@ -7,5 +7,10 @@ edition = "2021"
 repository = "https://github.com/daxartio/github-actions"
 license = "MIT"
 
+[features]
+default = []
+all = ["uuid"]
+uuid = ["dep:uuid"]
+
 [dependencies]
-uuid = { version = "1.17.0", features = ["v4"] }
+uuid = { version = "1.17.0", features = ["v4"], optional = true}

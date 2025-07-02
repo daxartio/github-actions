@@ -2,12 +2,12 @@ mod command;
 mod file_command;
 mod group;
 mod input;
+mod macros;
+mod rand;
 mod state;
 mod stop_commands;
 mod summary;
 mod vars;
-
-mod macros;
 
 pub use command::*;
 pub use file_command::*;
@@ -22,10 +22,6 @@ pub use vars::*;
 const EOL: &str = "\r\n";
 #[cfg(not(windows))]
 const EOL: &str = "\n";
-
-fn delimiter() -> String {
-    format!("ghadelimiter_{}", uuid::Uuid::new_v4())
-}
 
 fn does_env_exist(envname: &str) -> bool {
     std::env::var(envname).is_ok()
@@ -43,7 +39,7 @@ where
     if does_env_exist(crate::vars::GITHUB_ENV) {
         issue_file_command(
             crate::vars::GITHUB_ENV,
-            &prepare_key_value_message(key, value.as_ref(), delimiter().as_str()).unwrap(),
+            &prepare_key_value_message(key, value.as_ref(), rand::delimiter().as_str()).unwrap(),
         )
     } else {
         println!(
@@ -66,7 +62,7 @@ where
     if does_env_exist(crate::vars::GITHUB_OUTPUT) {
         issue_file_command(
             crate::vars::GITHUB_OUTPUT,
-            &prepare_key_value_message(key, value.as_ref(), delimiter().as_str()).unwrap(),
+            &prepare_key_value_message(key, value.as_ref(), rand::delimiter().as_str()).unwrap(),
         )
     } else {
         println!(
@@ -89,7 +85,7 @@ where
     if does_env_exist(crate::vars::GITHUB_STATE) {
         issue_file_command(
             crate::vars::GITHUB_STATE,
-            &prepare_key_value_message(key, value.as_ref(), delimiter().as_str()).unwrap(),
+            &prepare_key_value_message(key, value.as_ref(), rand::delimiter().as_str()).unwrap(),
         )
     } else {
         println!(

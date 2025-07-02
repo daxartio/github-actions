@@ -17,7 +17,7 @@ pub fn issue_file_command(env: &str, message: &str) -> Result<(), FileCommandErr
         .open(file)
         .map_err(FileCommandError::FileError)?;
 
-    writeln!(file, "{}", message).map_err(FileCommandError::FileError)?;
+    writeln!(file, "{message}").map_err(FileCommandError::FileError)?;
     Ok(())
 }
 
@@ -30,15 +30,13 @@ where
 
     if key.as_ref().contains(delimiter) {
         return Err(format!(
-            "Unexpected input: key should not contain the delimiter \"{}\"",
-            delimiter
+            "Unexpected input: key should not contain the delimiter \"{delimiter}\""
         ));
     }
 
     if value.contains(delimiter) {
         return Err(format!(
-            "Unexpected input: value should not contain the delimiter \"{}\"",
-            delimiter
+            "Unexpected input: value should not contain the delimiter \"{delimiter}\""
         ));
     }
 
