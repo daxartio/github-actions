@@ -13,4 +13,4 @@ all = ["uuid"]
 uuid = ["dep:uuid"]
 
 [dependencies]
-uuid = { version = "1.17.0", features = ["v4"], optional = true}
+uuid = { version = "1.20.0", features = ["v4"], optional = true}
