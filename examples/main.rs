@@ -4,9 +4,11 @@ fn main() {
     info!("debug={}", is_debug());
     info!(get_input("name").unwrap_or("default".to_string()));
     info!(get_bool_input("bool").unwrap_or_default());
-    info!(get_multiline_input("multiline")
-        .unwrap_or_default()
-        .join("\\n"));
+    info!(
+        get_multiline_input("multiline")
+            .unwrap_or_default()
+            .join("\\n")
+    );
     info!("state={}", get_state("name").unwrap_or_default());
 
     {
