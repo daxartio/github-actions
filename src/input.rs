@@ -45,7 +45,9 @@ mod tests {
 
     #[test]
     fn test_get_input() {
-        env::set_var("INPUT_NAME", "value");
+        unsafe {
+            env::set_var("INPUT_NAME", "value");
+        }
         assert_eq!("value".to_string(), get_input("name").unwrap());
     }
 
@@ -56,13 +58,17 @@ mod tests {
 
     #[test]
     fn test_get_bool_input() {
-        env::set_var("INPUT_CI", "true");
+        unsafe {
+            env::set_var("INPUT_CI", "true");
+        }
         assert!(get_bool_input("ci").unwrap());
     }
 
     #[test]
     fn test_get_multiline_input() {
-        env::set_var("INPUT_LINES", "true\nfalse\n");
+        unsafe {
+            env::set_var("INPUT_LINES", "true\nfalse\n");
+        }
         assert_eq!(vec!["true", "false"], get_multiline_input("lines").unwrap());
     }
 }

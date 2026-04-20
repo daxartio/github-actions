@@ -36,7 +36,7 @@ impl<T: AsRef<str>> StopCommands<T> {
 }
 
 impl StopCommands<String> {
-    pub fn gen() -> Self {
+    pub fn generate() -> Self {
         StopCommands::<String>::new(crate::rand::random_id())
     }
 }

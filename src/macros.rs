@@ -107,7 +107,7 @@ macro_rules! group {
 #[macro_export]
 macro_rules! stop_commands {
     () => {
-        let __stop_commands = $crate::StopCommands::gen();
+        let __stop_commands = $crate::StopCommands::generate();
         let __stop_commands_ender = $crate::StopCommandsEnder::new(&__stop_commands);
     };
     ($token:expr) => {
