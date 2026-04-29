@@ -1,0 +1,72 @@
+name: Wasm
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_PROFILE_RELEASE_CODEGEN_UNITS: 1
+  CARGO_PROFILE_RELEASE_LTO: fat
+  CARGO_PROFILE_RELEASE_OPT_LEVEL: z
+  CARGO_PROFILE_RELEASE_PANIC: abort
+  CARGO_PROFILE_RELEASE_STRIP: symbols
+  WASM_EXAMPLE: wasm
+  WASM_TARGET: wasm32-wasip1
+
+jobs:
+  wasm:
+    name: Build and run wasm
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v6
+
+      - name: Install rust toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          target: ${{ env.WASM_TARGET }}
+
+      - name: Build optimized wasm
+        run: |
+          cargo build --locked --example "${WASM_EXAMPLE}" --target "${WASM_TARGET}" --release
+          mkdir -p dist
+          cp "target/${WASM_TARGET}/release/examples/${WASM_EXAMPLE}.wasm" "dist/${WASM_EXAMPLE}.wasm"
+          wc -c "dist/${WASM_EXAMPLE}.wasm"
+
+      - name: Setup Wasmer
+        uses: wasmerio/setup-wasmer@v3.1
+
+      - name: Run wasm with Wasmer
+        id: wasm
+        env:
+          INPUT_DRY_RUN: "true"
+          INPUT_NAME: github-actions
+        run: |
+          file_commands_dir="$(dirname "${GITHUB_OUTPUT}")"
+          wasmer_cache_dir="${RUNNER_TEMP}/wasmer-cache"
+          mkdir -p "${wasmer_cache_dir}"
+          ls -lh dist
+          test -f "dist/${WASM_EXAMPLE}.wasm"
+          wasmer run \
+            --cache-dir "${wasmer_cache_dir}" \
+            --volume "${file_commands_dir}:/github-file-commands" \
+            --env "GITHUB_ENV=/github-file-commands/$(basename "${GITHUB_ENV}")" \
+            --env "GITHUB_OUTPUT=/github-file-commands/$(basename "${GITHUB_OUTPUT}")" \
+            --env "INPUT_DRY_RUN=${INPUT_DRY_RUN}" \
+            --env "INPUT_NAME=${INPUT_NAME}" \
+            "./dist/${WASM_EXAMPLE}.wasm"
+
+      - name: Check wasm action output
+        run: |
+          echo "wasm-example=${{ steps.wasm.outputs['wasm-example'] }}"
+          test "${{ steps.wasm.outputs['wasm-example'] }}" = "ok"
+
+      - name: Upload wasm artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: github-actions-wasm
+          path: dist/wasm.wasm
